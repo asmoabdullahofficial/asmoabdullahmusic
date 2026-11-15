@@ -1,5 +1,362 @@
 {
-  "updated": null,
+  "updated": "2026-11-15T09:00:43.029Z",
+  "apple": [
+    {
+      "id": "6833492043",
+      "name": "Sylheti Fuwain",
+      "type": "Single",
+      "date": "2026-11-11",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/78/3d/eb/783debe4-80c6-cd5f-00cf-47343ffca90e/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/sylheti-fuwain-single/6833492043"
+    },
+    {
+      "id": "6831258457",
+      "name": "IBADAT - ইবাদাত (Ei Mon Valo Na)",
+      "type": "Single",
+      "date": "2026-11-05",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/55/9a/9c/559a9c33-5246-ac83-a2fd-5cc869468559/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/ibadat-%E0%A6%87%E0%A6%AC-%E0%A6%A6-%E0%A6%A4-ei-mon-valo-na-single/6831258457"
+    },
+    {
+      "id": "6815078655",
+      "name": "Nijor Hoiya Bacho - নিজর হইয়া বাঁচো",
+      "type": "Single",
+      "date": "2026-09-22",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f5/eb/60/f5eb6044-3077-d8ea-24e7-50c395b2e4ae/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/nijor-hoiya-bacho-%E0%A6%A8-%E0%A6%9C%E0%A6%B0-%E0%A6%B9%E0%A6%87%E0%A7%9F-%E0%A6%AC-%E0%A6%9A-single/6815078655"
+    },
+    {
+      "id": "6812473448",
+      "name": "HEIN MERE DIMAG PER",
+      "type": "Single",
+      "date": "2026-09-15",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/13/83/e6/1383e61e-1d58-1823-14eb-aecc5fdc3bb0/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hein-mere-dimag-per-single/6812473448"
+    },
+    {
+      "id": "6812374255",
+      "name": "Hay Rabba (Yeh Mujhe Kya Hua)",
+      "type": "Single",
+      "date": "2026-09-14",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a4/13/6c/a4136ca0-727d-14d6-42dc-3efa6b132f21/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hay-rabba-yeh-mujhe-kya-hua-single/6812374255"
+    },
+    {
+      "id": "6811461082",
+      "name": "Chukher E Kajol | চোখের ই কাজল",
+      "type": "Single",
+      "date": "2026-09-11",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/72/61/31/7261312d-efb3-7ced-6471-f6d362f7a48d/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/chukher-e-kajol-%E0%A6%9A-%E0%A6%96-%E0%A6%B0-%E0%A6%87-%E0%A6%95-%E0%A6%9C%E0%A6%B2-single/6811461082"
+    },
+    {
+      "id": "6807987141",
+      "name": "SHORBONASH (সর্বনাশ)",
+      "type": "Single",
+      "date": "2026-09-02",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/94/8d/c5/948dc5eb-fd0b-9a8e-2fbd-b9a07aabcdc6/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/shorbonash-%E0%A6%B8%E0%A6%B0-%E0%A6%AC%E0%A6%A8-%E0%A6%B6-single/6807987141"
+    },
+    {
+      "id": "6807074929",
+      "name": "মানুষ চিনছি হাড়ে হাড়ে",
+      "type": "Single",
+      "date": "2026-08-31",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7b/ee/17/7bee17ec-39c3-27a6-9449-a1152304adde/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%AE-%E0%A6%A8-%E0%A6%B7-%E0%A6%9A-%E0%A6%A8%E0%A6%9B-%E0%A6%B9-%E0%A7%9C-%E0%A6%B9-%E0%A7%9C-single/6807074929"
+    },
+    {
+      "id": "6806609551",
+      "name": "WHO AM I",
+      "type": "Single",
+      "date": "2026-08-29",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ef/a4/6a/efa46a0a-d3b3-9563-2efb-9dbee3d9e53d/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/who-am-i-single/6806609551"
+    },
+    {
+      "id": "6805461695",
+      "name": "FILTER OFF - ফিল্টারহীন",
+      "type": "Single",
+      "date": "2026-08-26",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ab/4a/d8/ab4ad82b-81d9-ccec-4f96-979cabe1e32a/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/filter-off-%E0%A6%AB-%E0%A6%B2-%E0%A6%9F-%E0%A6%B0%E0%A6%B9-%E0%A6%A8-single/6805461695"
+    },
+    {
+      "id": "6805189910",
+      "name": "ROCKSTAR 2",
+      "type": "Single",
+      "date": "2026-08-25",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f2/3d/e3/f23de324-3736-d936-e073-b708c2026560/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/rockstar-2-single/6805189910"
+    },
+    {
+      "id": "6804796815",
+      "name": "UNNOTI (উন্নতি)",
+      "type": "Single",
+      "date": "2026-08-24",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d3/f4/85/d3f48544-ce79-4cde-b57c-e3b6c9e0cfe2/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/unnoti-%E0%A6%89%E0%A6%A8-%E0%A6%A8%E0%A6%A4-single/6804796815"
+    },
+    {
+      "id": "6804372780",
+      "name": "BAHANA - ASMO ABDULLAH -বেঁচে থাকার বাহানা",
+      "type": "Single",
+      "date": "2026-08-23",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/16/b8/fa/16b8fa1b-9cf7-40ae-f49f-c391a3325cc9/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/bahana-asmo-abdullah-%E0%A6%AC-%E0%A6%9A-%E0%A6%A5-%E0%A6%95-%E0%A6%B0-%E0%A6%AC-%E0%A6%B9-%E0%A6%A8-single/6804372780"
+    },
+    {
+      "id": "6804282457",
+      "name": "WOOP WOOP",
+      "type": "Single",
+      "date": "2026-08-22",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/93/d3/bc/93d3bc1a-eba4-94a6-dd02-f06179e2929f/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/woop-woop-single/6804282457"
+    },
+    {
+      "id": "6803692715",
+      "name": "LATE NIGHT | EKAKITYO",
+      "type": "Single",
+      "date": "2026-08-20",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7d/d4/81/7dd4819d-d3b7-8e11-ad22-12709180896c/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/late-night-ekakityo-single/6803692715"
+    },
+    {
+      "id": "6797113053",
+      "name": "বড়লেখি ফুওয়াইন - BARLEKHI FUWAIN",
+      "type": "Single",
+      "date": "2026-08-01",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a8/7f/31/a87f31d1-fd7c-8d81-36ef-f406f63541d7/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%AC%E0%A7%9C%E0%A6%B2-%E0%A6%96-%E0%A6%AB-%E0%A6%93%E0%A7%9F-%E0%A6%87%E0%A6%A8-barlekhi-fuwain-single/6797113053"
+    },
+    {
+      "id": "6796735810",
+      "name": "EI MON AWARA",
+      "type": "Single",
+      "date": "2026-07-31",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/71/cd/1c/71cd1c7e-1a95-c17a-bc4e-64bba97534d8/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/ei-mon-awara-single/6796735810"
+    },
+    {
+      "id": "6796324307",
+      "name": "SAWAL HI AJEEB THA",
+      "type": "Single",
+      "date": "2026-07-30",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ba/8e/4f/ba8e4f67-e186-8232-cdbd-ed57c476a685/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/sawal-hi-ajeeb-tha-single/6796324307"
+    },
+    {
+      "id": "6768293595",
+      "name": "চেষ্টা - CHESTA",
+      "type": "Single",
+      "date": "2026-05-08",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a8/9a/88/a89a8851-d092-cc15-d4e0-a985e39f1c41/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%9A-%E0%A6%B7-%E0%A6%9F-chesta-single/6768293595"
+    },
+    {
+      "id": "1895800646",
+      "name": "ইচ্ছে - ICCHE",
+      "type": "Single",
+      "date": "2026-04-27",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/cd/04/89/cd04899e-f427-e4a6-fb0c-fa80ed4a3e02/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%87%E0%A6%9A-%E0%A6%9B-icche-single/1895800646"
+    },
+    {
+      "id": "1865678367",
+      "name": "OMG",
+      "type": "Single",
+      "date": "2025-12-31",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/78/12/3678128d-8e3e-d93c-7bae-d8a77bdcbc70/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/omg-single/1865678367"
+    },
+    {
+      "id": "1863915771",
+      "name": "NASHEDI",
+      "type": "Single",
+      "date": "2025-12-23",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5f/ac/a3/5faca3a1-658e-84cb-b706-b8c3f0c5bc83/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/nashedi-single/1863915771"
+    },
+    {
+      "id": "1860892937",
+      "name": "KHWAB স্বপ্ন",
+      "type": "Single",
+      "date": "2025-12-12",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8a/e1/b1/8ae1b16c-3c2c-5559-db1c-ed2222b45646/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/khwab-%E0%A6%B8-%E0%A6%AC%E0%A6%AA-%E0%A6%A8-single/1860892937"
+    },
+    {
+      "id": "1860912937",
+      "name": "JOKER Bangla Version",
+      "type": "Single",
+      "date": "2025-12-12",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/da/17/2b/da172b60-25d8-9c70-c005-2e7bf9678841/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/joker-bangla-version-single/1860912937"
+    },
+    {
+      "id": "1860948107",
+      "name": "SYLHETI VIBES",
+      "type": "Single",
+      "date": "2025-12-12",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4f/63/ed/4f63ede0-7ac2-ac09-c2cf-b5a7dc31a074/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/sylheti-vibes-single/1860948107"
+    },
+    {
+      "id": "1860873513",
+      "name": "I AM GONE",
+      "type": "Single",
+      "date": "2025-12-12",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/38/ec/c9/38ecc914-1af6-c583-ffed-9f26e1a8053e/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/i-am-gone-single/1860873513"
+    },
+    {
+      "id": "1860483516",
+      "name": "CHALLENGE",
+      "type": "Single",
+      "date": "2025-12-10",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/87/18/69871857-f8ba-4977-69e0-63995174270c/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/challenge-single/1860483516"
+    },
+    {
+      "id": "1860339287",
+      "name": "MIDNIGHT",
+      "type": "Single",
+      "date": "2025-12-10",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a9/1d/9d/a91d9db3-8080-87fd-39bc-7710d611a820/8721422051792.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/midnight-single/1860339287"
+    },
+    {
+      "id": "1860493600",
+      "name": "ROCKSTAR",
+      "type": "Single",
+      "date": "2025-12-10",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/81/d4/c6/81d4c6de-2619-dc44-b1f8-faf3a55d97ed/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/rockstar-single/1860493600"
+    },
+    {
+      "id": "1860399651",
+      "name": "JOKER",
+      "type": "Single",
+      "date": "2025-12-10",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/13/a5/b2/13a5b2d8-3207-c330-2d71-e0d9ddb09e5e/artwork.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/joker-single/1860399651"
+    },
+    {
+      "id": "1861463682",
+      "name": "9 to 5",
+      "type": "Single",
+      "date": "2025-10-26",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fb/bd/f8/fbbdf800-71eb-a17f-322a-22ed8453f9c5/5063845851386_cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/9-to-5-single/1861463682"
+    },
+    {
+      "id": "1861862193",
+      "name": "আমি কারে কইতাম (with ASMO ABDULLAH)",
+      "type": "EP",
+      "date": "2025-10-23",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/1a/8f/de1a8f53-d3ac-600d-d2ae-92e48922cad4/5063893543974_cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%86%E0%A6%AE-%E0%A6%95-%E0%A6%B0-%E0%A6%95%E0%A6%87%E0%A6%A4-%E0%A6%AE-with-asmo-abdullah-ep/1861862193"
+    },
+    {
+      "id": "1861773337",
+      "name": "একটা কবিতা",
+      "type": "Single",
+      "date": "2025-10-22",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1f/19/7a/1f197a3f-1798-964b-c934-f8ff5936fcd3/5063863779969_cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/%E0%A6%8F%E0%A6%95%E0%A6%9F-%E0%A6%95%E0%A6%AC-%E0%A6%A4-single/1861773337"
+    }
+  ],
   "spotify": [],
-  "youtube": []
+  "youtube": [
+    {
+      "id": "HkdyO5HdP3Y",
+      "title": "SYLHETI FUWAIN – সিলেটি ফুওয়াইন | ASMO ABDULLAH (Official Music Video)",
+      "date": "2026-11-11",
+      "thumb": "https://i.ytimg.com/vi/HkdyO5HdP3Y/hqdefault.jpg"
+    },
+    {
+      "id": "Wrun0L6o0gs",
+      "title": "i am gone, either it’s red or its boack i don’t know which glass that i am on",
+      "date": "2026-09-18",
+      "thumb": "https://i.ytimg.com/vi/Wrun0L6o0gs/hqdefault.jpg"
+    },
+    {
+      "id": "ERWj1sNckek",
+      "title": "ROCKSTAR 2 – ASMO ABDULLAH | STLHETI UK DRILL TRAP",
+      "date": "2026-09-18",
+      "thumb": "https://i.ytimg.com/vi/ERWj1sNckek/hqdefault.jpg"
+    },
+    {
+      "id": "ZHRzS-04Erg",
+      "title": "HEIN MERE DIMAG PAR — ASMO ABDULLAH | Official Lyrical Video | Hindi Emotional Rap Song",
+      "date": "2026-09-15",
+      "thumb": "https://i.ytimg.com/vi/ZHRzS-04Erg/hqdefault.jpg"
+    },
+    {
+      "id": "FhWk-cwrH0k",
+      "title": "Hay Rabba – Yeh Mujhe Kya Hua | ASMO ABDULLAH | New Hindi Song ",
+      "date": "2026-09-15",
+      "thumb": "https://i.ytimg.com/vi/FhWk-cwrH0k/hqdefault.jpg"
+    },
+    {
+      "id": "PUtzt5Pxkbo",
+      "title": "তোমাগো জীবন তলাই গেছে - FILTER OFF (ফিল্টারহীন) - ASMO ABDULLAH | Bangla Comedy Rap 2026",
+      "date": "2026-09-13",
+      "thumb": "https://i.ytimg.com/vi/PUtzt5Pxkbo/hqdefault.jpg"
+    },
+    {
+      "id": "E7X2NyWh800",
+      "title": "Chukher E Kajol (চোখের ই কাজল) #asmoabdullah #anime #animeedit #animeshorts",
+      "date": "2026-09-13",
+      "thumb": "https://i.ytimg.com/vi/E7X2NyWh800/hqdefault.jpg"
+    },
+    {
+      "id": "T0f8r2QeaFk",
+      "title": "Chukher E Kajol (চোখের ই কাজল)",
+      "date": "2026-09-12",
+      "thumb": "https://i.ytimg.com/vi/T0f8r2QeaFk/hqdefault.jpg"
+    },
+    {
+      "id": "GVBcLW1lZK0",
+      "title": "Chukher E Kajol (চোখের ই কাজল) #asmoabdullah #banglareels #banglashorts",
+      "date": "2026-09-11",
+      "thumb": "https://i.ytimg.com/vi/GVBcLW1lZK0/hqdefault.jpg"
+    },
+    {
+      "id": "gxPSaMZOTNI",
+      "title": "Chukher E Kajol | চোখের ই কাজল - ASMO ABDULLAH | New Bangla Song 2026",
+      "date": "2026-09-10",
+      "thumb": "https://i.ytimg.com/vi/gxPSaMZOTNI/hqdefault.jpg"
+    },
+    {
+      "id": "VeXjACkbpC0",
+      "title": "SHORBONASH (সর্বনাশ) — ASMO ABDULLAH | New Sylheti Funny Rap Song",
+      "date": "2026-09-02",
+      "thumb": "https://i.ytimg.com/vi/VeXjACkbpC0/hqdefault.jpg"
+    },
+    {
+      "id": "r_pV36HA7NA",
+      "title": "মানুষ চিনছি হাড়ে হাড়ে — ASMO ABDULLAH - New Bangla Folk Music",
+      "date": "2026-08-31",
+      "thumb": "https://i.ytimg.com/vi/r_pV36HA7NA/hqdefault.jpg"
+    },
+    {
+      "id": "NGgqlf6ET_g",
+      "title": "WHO AM I - ASMO ABDULLAH at 12:00AM",
+      "date": "2026-08-29",
+      "thumb": "https://i.ytimg.com/vi/NGgqlf6ET_g/hqdefault.jpg"
+    },
+    {
+      "id": "WrURmdtry4c",
+      "title": "Jibone Jokhon Kuno Unnoti Nai 🤣🤣🤣 #asmoabdullah #banglareels #banglashorts #বাংলাকমেডি",
+      "date": "2026-08-28",
+      "thumb": "https://i.ytimg.com/vi/WrURmdtry4c/hqdefault.jpg"
+    },
+    {
+      "id": "AxYt5Lh7-AE",
+      "title": "Phones is the best? 🕳️📱 | ASMO ABDULLAH #FilterOff",
+      "date": "2026-08-27",
+      "thumb": "https://i.ytimg.com/vi/AxYt5Lh7-AE/hqdefault.jpg"
+    }
+  ]
 }
