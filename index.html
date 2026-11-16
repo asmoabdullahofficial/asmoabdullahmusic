@@ -51,6 +51,14 @@
 </head>
 <body>
 
+<!-- Fixed page background video: stays behind every section while scrolling (starts after the hero) -->
+<div class="page-bg" aria-hidden="true">
+  <video class="bgvideo" id="endVideo" data-mode="fixed" muted loop playsinline preload="none"
+         data-id="video-442a194f-c488-4d74-8e08-db8277dd9880"></video>
+  <div class="page-bg-shade"></div>
+</div>
+
+
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- Top bar + 3-line menu -->
@@ -250,8 +258,6 @@
 
 <!-- ENDING SECTION with second background video -->
 <footer class="end" id="end">
-  <video class="bgvideo" id="endVideo" muted loop playsinline preload="none" aria-hidden="true"
-         data-id="video-442a194f-c488-4d74-8e08-db8277dd9880"></video>
   <div class="end-shade"></div>
   <div class="wrap end-inner">
     <p class="eyebrow">Thank you for listening</p>
