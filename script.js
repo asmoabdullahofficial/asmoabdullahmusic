@@ -54,19 +54,15 @@
   function posterUrl(id) {
     return 'https://res.cloudinary.com/' + CLOUD + '/video/upload/so_0,f_auto,q_auto,w_' + width + ',c_limit/' + id + '.jpg';
   }
+  var layers = {};
   function initVideo(v) {
     var id = v.getAttribute('data-id');
+    var layer = v.getAttribute('data-layer');
     v.muted = true; v.defaultMuted = true; v.setAttribute('webkit-playsinline', '');
     v.poster = posterUrl(id);
     v.style.backgroundImage = 'url(' + posterUrl(id) + ')';
-    // page-wide background: also keep the still poster on the container, so something shows even if autoplay is blocked
-    if (v.getAttribute('data-mode') === 'fixed' && v.parentNode) v.parentNode.style.backgroundImage = 'url(' + posterUrl(id) + ')';
-    if (saveData || reduce) return; // poster only
+    var noPlay = saveData || reduce;      // poster only
     var loaded = false, want = false;
-    function tryPlay() { if (want && loaded && v.paused) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }
-    // iPhone Low Power Mode / strict autoplay: retry on the first touches
-    document.addEventListener('touchend', tryPlay, { passive: true });
-    document.addEventListener('click', tryPlay);
     function load() {
       if (loaded) return; loaded = true;
       [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (f) {
@@ -74,29 +70,61 @@
       });
       v.load();
     }
-    if (v.getAttribute('data-mode') === 'fixed') {
-      // page-wide background: wait until the hero is mostly scrolled away, then load + play; pause while hero covers it
-      var hero = $('#home');
-      var go = function (show) {
-        want = show;
-        if (show) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+    function play() { var q = v.play(); if (q && q.catch) q.catch(function () {}); }
+    function tryPlay() { if (want && loaded && v.paused) play(); }
+    // iPhone Low Power Mode / strict autoplay: retry on the first touches
+    if (!noPlay) { document.addEventListener('touchend', tryPlay, { passive: true }); document.addEventListener('click', tryPlay); }
+
+    if (layer) {                          // page-background layer, driven by scroll position
+      layers[layer] = {
+        v: v,
+        warm: function () { if (!noPlay) load(); },
+        set: function (opacity, active) {
+          v.style.opacity = opacity;
+          if (noPlay) return;
+          if (active) { want = true; load(); if (v.paused) play(); }
+          else { want = false; if (!v.paused) v.pause(); }
+        }
       };
-      if (!hero || !('IntersectionObserver' in window)) { window.addEventListener('scroll', function once() { window.removeEventListener('scroll', once); go(true); }, { passive: true }); return; }
-      new IntersectionObserver(function (es) { go(es[0].intersectionRatio < 0.8); },
-        { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] }).observe(hero);
       return;
     }
-    if (!('IntersectionObserver' in window)) { load(); v.play().catch(function () {}); return; }
-    // load when near viewport, play only while visible (saves battery + data)
+    if (noPlay) return;
+    if (!('IntersectionObserver' in window)) { load(); want = true; play(); return; }
+    // hero: load when near viewport, play only while visible (saves battery + data)
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         want = e.isIntersecting;
-        if (e.isIntersecting) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-        else v.pause();
+        if (e.isIntersecting) { load(); play(); } else v.pause();
       });
     }, { rootMargin: '300px 0px' }).observe(v);
   }
   document.querySelectorAll('.bgvideo').forEach(initVideo);
+
+  /* ---------- scroll-driven dissolve: hero video -> mid video -> end video ---------- */
+  (function () {
+    var hero = $('#home'), about = $('#about'), ticking = false;
+    function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function update() {
+      ticking = false;
+      var vh = window.innerHeight || 800;
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      var aboutTop = about.getBoundingClientRect().top;
+      var a = clamp((vh - heroBottom) / (vh * 0.65));   // mid video fades in as the hero scrolls away
+      var b = clamp((vh - aboutTop) / vh);               // end video dissolves in over the mid video
+      if (layers.a) { if (heroBottom < vh * 0.9) layers.a.warm(); layers.a.set(a, a > 0.01 && b < 0.99); }
+      if (layers.b) { if (aboutTop < vh * 2.4) layers.b.warm(); layers.b.set(b, b > 0.01); }
+      if (!reduce) {                                     // slow drift so the footage moves with the page
+        var max = Math.max(1, document.documentElement.scrollHeight - vh);
+        var ty = -((window.scrollY / max) - 0.5) * vh * 0.10;
+        ['a', 'b'].forEach(function (k) { if (layers[k]) layers[k].v.style.transform = 'translate3d(0,' + ty.toFixed(1) + 'px,0) scale(1.12)'; });
+      }
+    }
+    function req() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req);
+    window.addEventListener('load', req);
+    update();
+  })();
 
   /* ---------- player modal ---------- */
   var modal = $('#modal'), modalBody = $('#modalBody');
