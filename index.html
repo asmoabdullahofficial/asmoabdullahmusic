@@ -21,6 +21,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MV2WXP6DVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MV2WXP6DVZ');
+</script>
+
 
 <script type="application/ld+json">
 {
@@ -116,7 +125,7 @@
     <div class="sec-head reveal">
       <p class="eyebrow">Auto-synced</p>
       <h2>YouTube Music</h2>
-      <p class="lead">Latest uploads from the official channel. Play inside the site or continue on YouTube Music.</p>
+      <p class="lead">Albums and singles from the official YouTube Music artist profile. Play inside the site or continue on YouTube Music.</p>
     </div>
     <div class="grid grid-wide" id="youtubeGrid" aria-live="polite"></div>
     <div class="more" id="youtubeMore" hidden><button class="btn btn-ghost" type="button" id="youtubeMoreBtn">Show all videos</button></div>
@@ -206,7 +215,7 @@
       <h3>Information we collect</h3>
       <p>Like most websites, our hosting and delivery providers may record standard log data such as IP address, browser type, date and time of the visit, and the pages you came from. We use this only to keep the site running and secure.</p>
       <h3>Embedded content and cookies</h3>
-      <p>This site embeds players and media from third parties, including Spotify, YouTube and Cloudinary. These services may set their own cookies or collect usage data when you interact with their players, under their own privacy policies.</p>
+      <p>We use Google Analytics to understand how visitors use the site, and an AI chat assistant powered by Chatbase to answer questions. Messages you type into the chatbot are processed by Chatbase. This site also embeds players and media from third parties, including Spotify, YouTube, Apple Music and Cloudinary. These services may set their own cookies or collect usage data when you interact with their players, under their own privacy policies.</p>
       <h3>Third-party links</h3>
       <p>We link to services such as Spotify, Apple Music, YouTube Music, Amazon Music, Boomplay and social networks. We are not responsible for the content or privacy practices of those sites.</p>
       <h3>Email</h3>
@@ -263,6 +272,11 @@
   <button class="modal-x" id="modalX" type="button" aria-label="Close player">Close</button>
   <div class="modal-body" id="modalBody"></div>
 </dialog>
+
+<!-- Chatbase chatbot -->
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="Z4ePo4oP_B_bsyVwFimno";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
 
 <script src="script.js" defer></script>
 </body>
