@@ -169,13 +169,95 @@ async function syncYouTube(previous) {
   const fresh = YOUTUBE_API_KEY ? await ytViaApi() : await ytViaRss();
   const map = new Map();
   for (const v of [...fresh, ...previous]) if (!map.has(v.id)) map.set(v.id, v);
-  return [...map.values()].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 100);
+  const all = [...map.values()].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 100);
+  let checks = 0;
+  for (const v of all) {            // drop Shorts (checked once, then remembered)
+    if (v.short === undefined && checks < 40) { checks++; const r = await isShort(v.id); if (r !== null) v.short = r; }
+  }
+  return all.filter((v) => !v.short);
+}
+
+/* ---------------- YouTube Music artist profile (no key) ---------------- */
+// Uses the same web endpoint the music.youtube.com site itself calls. Unofficial, so every step is defensive.
+const YTM = 'https://music.youtube.com/youtubei/v1/browse?prettyPrint=false';
+async function ytmBrowse(body) {
+  const r = await fetch(YTM, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Origin: 'https://music.youtube.com', 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9', Cookie: 'CONSENT=YES+1; SOCS=CAI' },
+    body: JSON.stringify({ context: { client: { clientName: 'WEB_REMIX', clientVersion: '1.20241106.01.00', hl: 'en', gl: 'US' } }, ...body }),
+  });
+  if (!r.ok) throw new Error(`YT Music ${r.status}`);
+  return r.json();
+}
+function* walk(o) {
+  if (Array.isArray(o)) { for (const x of o) yield* walk(x); return; }
+  if (o && typeof o === 'object') { yield o; for (const k of Object.keys(o)) yield* walk(o[k]); }
+}
+const runsText = (x) => (x?.runs || []).map((r) => r.text).join('');
+function ytmItems(json) {
+  const out = [];
+  for (const o of walk(json)) {
+    const it = o.musicTwoRowItemRenderer;
+    if (!it) continue;
+    const title = runsText(it.title);
+    const bid = it.navigationEndpoint?.browseEndpoint?.browseId || it.title?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId;
+    if (!title || !bid || !/^MPRE/.test(bid)) continue; // albums / singles only
+    const th = it.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails || [];
+    const sub = runsText(it.subtitle).split('•').map((t) => t.trim()).filter(Boolean);
+    out.push({ browseId: bid, title, thumb: (th[th.length - 1] || {}).url || '',
+      type: sub.find((t) => /^(Album|Single|EP)$/i.test(t)) || 'Release', year: (sub.find((t) => /^\d{4}$/.test(t)) || '') });
+  }
+  return out;
+}
+async function syncYtMusic(previous) {
+  const channelId = await findChannelId();
+  if (!channelId) throw new Error('no channel id for YT Music');
+  const page = await ytmBrowse({ browseId: channelId });
+  let items = [];
+  for (const o of walk(page)) {   // only the Albums / Singles shelves (not "Appears on", "Fans also like")
+    const sh = o.musicCarouselShelfRenderer;
+    if (sh && /^(Albums|Singles)/i.test(runsText(sh.header?.musicCarouselShelfBasicHeaderRenderer?.title))) items = items.concat(ytmItems(sh.contents));
+  }
+  // follow the "more" buttons of the Albums / Singles shelves for the complete lists
+  for (const o of walk(page)) {
+    const shelf = o.musicCarouselShelfRenderer;
+    if (!shelf) continue;
+    const head = runsText(shelf.header?.musicCarouselShelfBasicHeaderRenderer?.title);
+    if (!/^(Albums|Singles)/i.test(head)) continue;
+    const ep = shelf.header?.musicCarouselShelfBasicHeaderRenderer?.moreContentButton?.buttonRenderer?.navigationEndpoint?.browseEndpoint;
+    if (!ep?.browseId) continue;
+    try { items = items.concat(ytmItems(await ytmBrowse({ browseId: ep.browseId, params: ep.params }))); }
+    catch (e) { console.warn('YT Music "more" failed:', e.message); }
+  }
+  const uniq = new Map();
+  for (const i of items) if (!uniq.has(i.browseId)) uniq.set(i.browseId, i);
+  if (!uniq.size) throw new Error('YT Music artist page returned no albums/singles');
+
+  const prevById = new Map((previous || []).map((x) => [x.browseId, x]));
+  const out = [];
+  let lookups = 0;
+  for (const i of uniq.values()) {
+    let playlist = prevById.get(i.browseId)?.playlist || '';
+    if (!playlist && lookups < 40) {
+      lookups++;
+      try { const a = await ytmBrowse({ browseId: i.browseId }); playlist = (JSON.stringify(a).match(/list=(OLAK5uy_[\w-]+)/) || [])[1] || ''; }
+      catch (e) { console.warn('YT Music album lookup failed:', i.title, e.message); }
+    }
+    out.push({ browseId: i.browseId, playlist, name: i.title, type: i.type, year: i.year,
+      cover: (i.thumb || '').replace(/=w\d+-h\d+[^\s"]*$/, '=w600-h600-l90-rj') });
+  }
+  return out; // YT Music lists newest first
+}
+
+async function isShort(id) {
+  try { const r = await fetch(`https://www.youtube.com/shorts/${id}`, { redirect: 'manual', headers: { 'User-Agent': UA } }); return r.status === 200; }
+  catch { return null; }
 }
 
 /* ---------------- main ---------------- */
 let old = {};
 try { old = JSON.parse(await readFile(OUT, 'utf8')); } catch { /* first run */ }
-const next = { updated: old.updated || null, apple: old.apple || [], spotify: old.spotify || [], youtube: old.youtube || [] };
+const next = { updated: old.updated || null, apple: old.apple || [], spotify: old.spotify || [], ytmusic: old.ytmusic || [], youtube: old.youtube || [] };
 let ok = 0;
 
 try { const a = await syncApple(); if (a.length) { next.apple = a; ok++; } console.log(`Apple Music: ${a.length} releases`); }
@@ -184,10 +266,13 @@ catch (e) { console.warn('Apple sync failed:', e.message); }
 try { const s = await syncSpotify(); if (s) { next.spotify = s; ok++; console.log(`Spotify: ${s.length} releases`); } else console.log('Spotify keys not set, skipping (fine)'); }
 catch (e) { console.warn('Spotify sync failed:', e.message); }
 
+try { const m = await syncYtMusic(next.ytmusic); next.ytmusic = m; ok++; console.log(`YouTube Music: ${m.length} releases`); }
+catch (e) { console.warn('YouTube Music sync failed:', e.message); }
+
 try { next.youtube = await syncYouTube(next.youtube); ok++; console.log(`YouTube: ${next.youtube.length} videos`); }
 catch (e) { console.warn('YouTube sync failed:', e.message); }
 
-const sig = (o) => JSON.stringify([o.apple, o.spotify, o.youtube]);
+const sig = (o) => JSON.stringify([o.apple, o.spotify, o.ytmusic, o.youtube]);
 const changed = sig(old) !== sig(next);
 if (changed) next.updated = new Date().toISOString();
 await writeFile(OUT, JSON.stringify(next, null, 2) + '\n');
