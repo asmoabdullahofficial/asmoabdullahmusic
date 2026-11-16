@@ -67,6 +67,17 @@
       });
       v.load();
     }
+    if (v.getAttribute('data-mode') === 'fixed') {
+      // page-wide background: wait until the hero is mostly scrolled away, then load + play; pause while hero covers it
+      var hero = $('#home');
+      var go = function (show) {
+        if (show) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+      };
+      if (!hero || !('IntersectionObserver' in window)) { window.addEventListener('scroll', function once() { window.removeEventListener('scroll', once); go(true); }, { passive: true }); return; }
+      new IntersectionObserver(function (es) { go(es[0].intersectionRatio < 0.8); },
+        { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] }).observe(hero);
+      return;
+    }
     if (!('IntersectionObserver' in window)) { load(); v.play().catch(function () {}); return; }
     // load when near viewport, play only while visible (saves battery + data)
     new IntersectionObserver(function (es) {
@@ -100,6 +111,23 @@
       allow: 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
     });
   }
+  function applePlayer(url) {
+    var u = safeUrl(url, ['music.apple.com']);
+    if (!u) return el('p', { class: 'empty', text: 'Player unavailable.' });
+    return el('iframe', {
+      title: 'Apple Music player', height: '450', loading: 'lazy',
+      src: u.replace('//music.apple.com', '//embed.music.apple.com'),
+      allow: 'autoplay *; encrypted-media *; fullscreen *; clipboard-write',
+      sandbox: 'allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation'
+    });
+  }
+  function ytPlaylistPlayer(list) {
+    return el('iframe', {
+      title: 'YouTube Music player', class: 'yt-frame',
+      src: 'https://www.youtube-nocookie.com/embed/videoseries?list=' + encodeURIComponent(list) + '&autoplay=1&rel=0',
+      allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen', allowfullscreen: ''
+    });
+  }
   function youtubePlayer(id) {
     return el('iframe', {
       title: 'YouTube player', class: 'yt-frame',
@@ -111,6 +139,7 @@
   /* ---------- release cards ---------- */
   function fmtDate(d) {
     if (!d) return '';
+    if (/^\d{4}$/.test(d)) return d;
     var t = new Date(d); if (isNaN(t)) return d;
     return t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
@@ -118,22 +147,26 @@
     try { var x = new URL(u); return x.protocol === 'https:' && hosts.some(function (h) { return x.hostname === h || x.hostname.endsWith('.' + h); }) ? x.href : ''; }
     catch (e) { return ''; }
   }
-  var IMG_HOSTS = ['scdn.co', 'spotifycdn.com', 'ytimg.com', 'googleusercontent.com', 'ggpht.com'];
+  var IMG_HOSTS = ['scdn.co', 'spotifycdn.com', 'ytimg.com', 'googleusercontent.com', 'ggpht.com', 'mzstatic.com'];
 
   function card(item, kind) {
     var cover = safeUrl(item.cover, IMG_HOSTS);
     var img = el('img', { alt: 'Cover of ' + item.title, loading: 'lazy', width: '640', height: kind === 'yt' ? '360' : '640' });
     if (cover) img.src = cover;
     var coverBtn = el('button', { class: 'rel-cover', type: 'button', 'aria-label': 'Play ' + item.title }, [img, el('span', { class: 'play' })]);
-    var open = function () { openPlayer(kind === 'yt' ? youtubePlayer(item.id) : spotifyPlayer(item.id)); };
+    var open = function () { openPlayer(kind === 'ym' ? (item.playlist ? ytPlaylistPlayer(item.playlist) : applePlayer('')) : kind === 'yt' ? youtubePlayer(item.id) : kind === 'ap' ? applePlayer(item.appleUrl) : spotifyPlayer(item.id)); };
     coverBtn.addEventListener('click', open);
 
     var playBtn = el('button', { class: 'btn btn-pri btn-sm', type: 'button', text: 'Play here' });
     playBtn.addEventListener('click', open);
-    var link = kind === 'yt'
+    var link = kind === 'ym'
+      ? (item.playlist ? 'https://music.youtube.com/playlist?list=' + encodeURIComponent(item.playlist) : 'https://music.youtube.com/@asmoabdullah')
+      : kind === 'yt'
       ? safeUrl(item.musicUrl, ['music.youtube.com'])
-      : safeUrl(item.url, ['open.spotify.com']);
-    var linkEl = el('a', { class: 'btn btn-ghost btn-sm', href: link || '#', target: '_blank', rel: 'noopener', text: kind === 'yt' ? 'YouTube Music' : 'Open in Spotify' });
+      : kind === 'ap'
+        ? 'https://open.spotify.com/search/' + encodeURIComponent(item.title + ' ASMO ABDULLAH')
+        : safeUrl(item.url, ['open.spotify.com']);
+    var linkEl = el('a', { class: 'btn btn-ghost btn-sm', href: link || '#', target: '_blank', rel: 'noopener', text: (kind === 'yt' || kind === 'ym') ? 'YouTube Music' : 'Open in Spotify' });
 
     return el('article', { class: 'rel' }, [
       coverBtn,
@@ -164,19 +197,30 @@
     }
   }
 
-  fetch('data/releases.json?v=' + Date.now(), { cache: 'no-store' })
+  fetch('releases.json?v=' + Date.now(), { cache: 'no-store' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .catch(function () { return { spotify: [], youtube: [] }; })
+    .catch(function () { return { apple: [], spotify: [], youtube: [] }; })
     .then(function (d) {
       var sp = (d.spotify || []).map(function (x) {
         return { id: x.id, title: x.name, type: x.type, date: x.date, cover: x.cover, url: x.url };
       });
+      var useApple = !sp.length && (d.apple || []).length;
+      if (useApple) {
+        sp = d.apple.map(function (x) {
+          return { id: x.id, title: x.name, type: x.type, date: x.date, cover: x.cover, appleUrl: x.url };
+        });
+      }
       var yt = (d.youtube || []).map(function (x) {
         return { id: x.id, title: x.title, type: 'Video', date: x.date, cover: x.thumb, musicUrl: 'https://music.youtube.com/watch?v=' + x.id };
       });
-      renderList('#spotifyGrid', '#spotifyMore', '#spotifyMoreBtn', sp, 'sp',
+      renderList('#spotifyGrid', '#spotifyMore', '#spotifyMoreBtn', sp, useApple ? 'ap' : 'sp',
         'Releases will appear here after the first automatic sync. Meanwhile, use the playlist below.');
-      renderList('#youtubeGrid', '#youtubeMore', '#youtubeMoreBtn', yt, 'yt',
+      var ym = (d.ytmusic || []).map(function (x) {
+        return { id: x.browseId, playlist: x.playlist, title: x.name, type: x.type, date: x.year, cover: x.cover };
+      });
+      var useYm = ym.length > 0;
+      if (useYm) { var yg = $('#youtubeGrid'); yg.classList.remove('grid-wide'); }
+      renderList('#youtubeGrid', '#youtubeMore', '#youtubeMoreBtn', useYm ? ym : yt, useYm ? 'ym' : 'yt',
         'Videos will appear here after the first automatic sync.');
     });
 })();
