@@ -18,29 +18,69 @@ async function getJson(url, opts) {
 const norm = (s) => s.toLowerCase().replace(/\s*-\s*(single|ep)$/i, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 
 /* ---------------- Apple Music (no key) ---------------- */
+// Source 1: iTunes lookup API (can lag 1-3 days behind new releases)
+// Source 2: the public Apple Music artist page (shows new releases immediately)
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
+const hiRes = (u) => (u || '').replace(/\/[^\/]+\.(jpg|png|webp)$/i, '/600x600bb.jpg').replace(/\/\d+x\d+bb\./, '/600x600bb.');
+const kindOf = (n) => (/-\s*EP$/i.test(n) ? 'EP' : /-\s*Single$/i.test(n) ? 'Single' : 'Album');
+const cleanName = (n) => n.replace(/\s*-\s*(Single|EP)$/i, '').trim();
+
+function metaOf(html, prop) {
+  const a = html.match(new RegExp(`<meta[^>]+(?:property|name)="${prop}"[^>]+content="([^"]*)"`, 'i'));
+  const b = html.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="${prop}"`, 'i'));
+  return decode((a || b || [])[1] || '');
+}
+
+async function appleAlbumFromPage(id, slug, store) {
+  const url = `https://music.apple.com/${store}/album/${slug}/${id}`;
+  const html = await (await fetch(url, { headers: { 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9' } })).text();
+  if (!html.includes(APPLE_ARTIST_ID)) return null; // not this artist's own release
+  let title = metaOf(html, 'og:title').replace(/^[‎‏\s]+/, '');
+  title = title.replace(/\s+by\s+.+?\s+on\s+Apple\s+Music.*$/i, '').trim();
+  if (!title) return null;
+  const date = (metaOf(html, 'music:release_date') || '').slice(0, 10);
+  return { id: String(id), name: cleanName(title), type: kindOf(title), date,
+    cover: hiRes(metaOf(html, 'og:image')), url: `https://music.apple.com/${store}/album/${slug}/${id}` };
+}
+
 async function syncApple() {
-  const seen = new Map();
-  for (const cc of ['us', 'om', 'in', 'bd', 'gb']) {
-    let d;
-    try { d = await getJson(`https://itunes.apple.com/lookup?id=${APPLE_ARTIST_ID}&entity=album&limit=200&country=${cc}`); }
-    catch (e) { console.warn(`Apple ${cc}:`, e.message); continue; }
-    for (const r of d.results || []) {
-      if (r.wrapperType !== 'collection' || !r.collectionName) continue;
-      const key = norm(r.collectionName);
-      if (seen.has(key)) continue;
-      const kind = /-\s*EP$/i.test(r.collectionName) ? 'EP' : /-\s*Single$/i.test(r.collectionName) ? 'Single' : 'Album';
-      seen.set(key, {
-        id: String(r.collectionId),
-        name: r.collectionName.replace(/\s*-\s*(Single|EP)$/i, ''),
-        type: kind,
-        date: (r.releaseDate || '').slice(0, 10),
-        cover: (r.artworkUrl100 || '').replace(/\/\d+x\d+bb\./, '/600x600bb.'),
-        url: (r.collectionViewUrl || '').split('?')[0],
-      });
-    }
-    if (seen.size) break; // first storefront that has the artist is enough
+  const seen = new Map();   // normalised name -> item
+  const haveIds = new Set();
+  const add = (it) => {
+    const key = norm(it.name);
+    if (!key || seen.has(key)) return;
+    seen.set(key, it); haveIds.add(it.id);
+  };
+
+  // Source 1: lookup API, all storefronts merged
+  for (const cc of ['om', 'us', 'in', 'bd', 'gb']) {
+    try {
+      const d = await getJson(`https://itunes.apple.com/lookup?id=${APPLE_ARTIST_ID}&entity=album&limit=200&country=${cc}&t=${Date.now()}`);
+      for (const r of d.results || []) {
+        if (r.wrapperType !== 'collection' || !r.collectionName) continue;
+        add({ id: String(r.collectionId), name: cleanName(r.collectionName), type: kindOf(r.collectionName),
+          date: (r.releaseDate || '').slice(0, 10), cover: hiRes(r.artworkUrl100), url: (r.collectionViewUrl || '').split('?')[0] });
+      }
+    } catch (e) { console.warn(`Apple lookup ${cc}:`, e.message); }
   }
-  return [...seen.values()].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  console.log(`Apple lookup API: ${seen.size} releases`);
+
+  // Source 2: artist page, catches releases the lookup API does not have yet
+  for (const store of ['om', 'us']) {
+    try {
+      const html = await (await fetch(`https://music.apple.com/${store}/artist/asmo-abdullah/${APPLE_ARTIST_ID}`, { headers: { 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9' } })).text();
+      const found = new Map();
+      for (const m of html.matchAll(/\/album\/([^"'\s<>\\\/?]+)\/(\d{6,})/g)) if (!found.has(m[2])) found.set(m[2], m[1]);
+      const missing = [...found].filter(([id]) => !haveIds.has(id)).slice(0, 25);
+      console.log(`Apple page (${store}): ${found.size} albums linked, ${missing.length} not in lookup`);
+      for (const [id, slug] of missing) {
+        try { const it = await appleAlbumFromPage(id, slug, store); if (it) { add(it); console.log('  + added from page:', it.name, it.date); } }
+        catch (e) { console.warn('  page album failed', id, e.message); }
+      }
+      if (found.size) break;
+    } catch (e) { console.warn(`Apple page ${store}:`, e.message); }
+  }
+  return [...seen.values()].sort((x, y) => (y.date || '').localeCompare(x.date || ''));
 }
 
 /* ---------------- Spotify (optional) ---------------- */
