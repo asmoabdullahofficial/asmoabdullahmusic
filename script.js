@@ -67,6 +67,17 @@
       });
       v.load();
     }
+    if (v.getAttribute('data-mode') === 'fixed') {
+      // page-wide background: wait until the hero is mostly scrolled away, then load + play; pause while hero covers it
+      var hero = $('#home');
+      var go = function (show) {
+        if (show) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+      };
+      if (!hero || !('IntersectionObserver' in window)) { window.addEventListener('scroll', function once() { window.removeEventListener('scroll', once); go(true); }, { passive: true }); return; }
+      new IntersectionObserver(function (es) { go(es[0].intersectionRatio < 0.8); },
+        { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] }).observe(hero);
+      return;
+    }
     if (!('IntersectionObserver' in window)) { load(); v.play().catch(function () {}); return; }
     // load when near viewport, play only while visible (saves battery + data)
     new IntersectionObserver(function (es) {
