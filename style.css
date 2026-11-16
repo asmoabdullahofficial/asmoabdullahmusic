@@ -3,7 +3,7 @@
   --line:rgba(255,255,255,.12); --acc:#f5b94a; --acc-ink:#1a1204;
   --r:16px; --max:1120px;
   /* background video visibility: lower number = video more visible */
-  --vid-shade:.30; --sec-a:.45; --alt-a:.62; --legal-a:.80;
+  --vid-shade:.10; --sec-a:.18; --alt-a:.32; --legal-a:.62;
   --display:"Space Grotesk",system-ui,sans-serif;
   --body:"Inter",system-ui,sans-serif;
 }
@@ -44,8 +44,10 @@ section[id],footer[id]{scroll-margin-top:0}
 
 /* hero + videos */
 .hero{position:relative;overflow:hidden;background:#000}
-.end{position:relative;overflow:hidden;background:transparent}
-.page-bg{position:fixed;inset:0;z-index:-1;background:#000;overflow:hidden}
+.end{position:relative;z-index:1;overflow:hidden;background:transparent}
+.page-bg{position:fixed;inset:0;z-index:0;background:#000 center/cover no-repeat;overflow:hidden;pointer-events:none}
+main{position:relative;z-index:1}
+.sec-head h2,.sec-head .lead,.sec-head .eyebrow,.sub,.playlist h3{text-shadow:0 2px 16px rgba(0,0,0,.75)}
 .page-bg .bgvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background-size:cover;background-position:center}
 .page-bg-shade{position:absolute;inset:0;background:rgba(7,7,11,var(--vid-shade))}
 .hero{min-height:100svh;display:flex;align-items:center}
