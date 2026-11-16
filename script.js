@@ -56,10 +56,17 @@
   }
   function initVideo(v) {
     var id = v.getAttribute('data-id');
+    v.muted = true; v.defaultMuted = true; v.setAttribute('webkit-playsinline', '');
     v.poster = posterUrl(id);
     v.style.backgroundImage = 'url(' + posterUrl(id) + ')';
+    // page-wide background: also keep the still poster on the container, so something shows even if autoplay is blocked
+    if (v.getAttribute('data-mode') === 'fixed' && v.parentNode) v.parentNode.style.backgroundImage = 'url(' + posterUrl(id) + ')';
     if (saveData || reduce) return; // poster only
-    var loaded = false;
+    var loaded = false, want = false;
+    function tryPlay() { if (want && loaded && v.paused) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }
+    // iPhone Low Power Mode / strict autoplay: retry on the first touches
+    document.addEventListener('touchend', tryPlay, { passive: true });
+    document.addEventListener('click', tryPlay);
     function load() {
       if (loaded) return; loaded = true;
       [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (f) {
@@ -71,6 +78,7 @@
       // page-wide background: wait until the hero is mostly scrolled away, then load + play; pause while hero covers it
       var hero = $('#home');
       var go = function (show) {
+        want = show;
         if (show) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
       };
       if (!hero || !('IntersectionObserver' in window)) { window.addEventListener('scroll', function once() { window.removeEventListener('scroll', once); go(true); }, { passive: true }); return; }
@@ -82,6 +90,7 @@
     // load when near viewport, play only while visible (saves battery + data)
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
+        want = e.isIntersecting;
         if (e.isIntersecting) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); }
         else v.pause();
       });
